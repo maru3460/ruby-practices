@@ -17,7 +17,7 @@ def calc_margin_length(file_name)
 end
 
 def sort_for_display(files)
-  (rows = files.length % 3).zero? ? files.length / 3 : files.length / 3 + 1
+  rows = (files.length % 3).zero? ? files.length / 3 : files.length / 3 + 1
   sorted_files = Array.new(rows) { [] }
   files = files.sort
 
