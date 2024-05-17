@@ -17,11 +17,11 @@ def calc_margin_length(file_name)
 end
 
 def sort_for_display(files)
-  rows = (files.length % 3).zero? ? files.length / 3 : files.length / 3 + 1
+  rows = (files.length % COLUMNS).zero? ? files.length / COLUMNS : files.length / COLUMNS + 1
   sorted_files = Array.new(rows) { [] }
   files = files.sort
 
-  2.times do
+  (COLUMNS - 1).times do
     rows.times do |row|
       sorted_files[row] << files.shift
     end
