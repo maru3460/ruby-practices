@@ -2,49 +2,39 @@
 
 # frozen_string_literal: true
 
-def cal_result(scores)
-  shots = devide_to_shots(scores)
-  next_points = cal_next_points(shots)
-  result = 0
-  9.times { |i| result += cal_point(i + 1, [shots[i], next_points[i]]) }
-  result += cal_point(10, shots[9])
-  result
+def calculate_result(scores)
+  frames = divide_into_frames(scores)
+  bonus_points = calculate_bonus_points(frames)
+  (0..9).inject(0) { |result, i| result + calculate_point(frames[i], bonus_points[i]) }
 end
 
-def devide_to_shots(scores)
-  shots = []
+def divide_into_frames(scores)
+  frames = []
   9.times do
-    if scores[0] == 10
-      shots << [10, 0]
-      scores.shift
-    else
-      shots << [scores[0], scores[1]]
-      scores.shift(2)
-    end
+    frames << (scores[0] == 10 ? [scores.shift, 0] : [scores.shift, scores.shift])
   end
-  shots << scores
+  frames << scores
 end
 
-def cal_next_points(shots)
-  next_points = []
+def calculate_bonus_points(frames)
+  bonus_points = []
   8.times do |i|
-    next_point = [shots[i + 1][0]]
-    next_point << (next_point[0] == 10 ? shots[i + 2][0] : shots[i + 1][1])
-    next_points << next_point
+    next_point = frames[i + 1][0]
+    bonus_points << [next_point, (next_point == 10 ? frames[i + 2][0] : frames[i + 1][1])]
   end
-  next_points << [shots[9][0], shots[9][1]]
+  bonus_points << [frames[9][0], frames[9][1]]
 end
 
-def cal_point(game, points)
-  return points.sum if game == 10
+def calculate_point(frame_point, bonus_point = nil)
+  return frame_point.sum if bonus_point.nil?
 
-  point = points[0].sum
-  point += points[1][0] if points[0].sum == 10
-  point += points[1][1] if points[0][0] == 10
+  point = frame_point.sum
+  point += bonus_point[0] if frame_point.sum == 10
+  point += bonus_point[1] if frame_point[0] == 10
   point
 end
 
 scores = ARGV[0].split(',').map { |s| s == 'X' ? 10 : s.to_i }
-result = cal_result(scores)
+result = calculate_result(scores)
 
 puts result
