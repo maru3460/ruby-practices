@@ -8,26 +8,26 @@ COLUMN_WIDTH = 30
 def display_files(files)
   files = sort_for_display(files)
   files.each do |file_set|
-    puts file_set.map { |file| file + ' ' * calc_margin_length(file) }.join
+    puts file_set.map { |file| file.to_s + ' ' * calc_margin_length(file) }.join
   end
 end
 
 def calc_margin_length(file_name)
+  return 0 if file_name.nil?
+
   COLUMN_WIDTH - (file_name.length + file_name.scan(/[^ -~｡-ﾟ\s]/).length)
 end
 
 def sort_for_display(files)
-  rows = (files.length % COLUMNS).zero? ? files.length / COLUMNS : files.length / COLUMNS + 1
+  rows = files.length / COLUMNS
+  rows += 1 unless (files.length % COLUMNS).zero?
   sorted_files = Array.new(rows) { [] }
   files = files.sort
 
-  (COLUMNS - 1).times do
+  COLUMNS.times do
     rows.times do |row|
       sorted_files[row] << files.shift
     end
-  end
-  files.each_with_index do |file, index|
-    sorted_files[index] << file
   end
 
   sorted_files
