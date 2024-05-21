@@ -2,6 +2,8 @@
 
 # frozen_string_literal: true
 
+require 'optparse'
+
 COLUMNS = 3
 COLUMN_WIDTH = 30
 
@@ -33,4 +35,11 @@ def sort_for_display(files)
   sorted_files
 end
 
-display_files(Dir.glob('*'))
+opt = OptionParser.new
+
+all = false
+opt.on('-a') { all = true }
+opt.parse!(ARGV)
+
+files = all ? Dir.entries('.') : Dir.glob('*')
+display_files(files)
