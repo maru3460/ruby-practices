@@ -5,7 +5,7 @@
 def calculate_result(scores)
   frames = divide_into_frames(scores)
   bonus_points = calculate_bonus_points(frames)
-  (0..9).inject(0) { |result, i| result + calculate_point(frames[i], bonus_points[i]) }
+  (0..9).sum { |i| calculate_point(frames[i], bonus_points[i]) }
 end
 
 def divide_into_frames(scores)
