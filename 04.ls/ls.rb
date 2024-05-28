@@ -24,7 +24,6 @@ def sort_for_display(files)
   rows = files.length / COLUMNS
   rows += 1 unless (files.length % COLUMNS).zero?
   sorted_files = Array.new(rows) { [] }
-  files = files.sort
 
   COLUMNS.times do
     rows.times do |row|
@@ -38,8 +37,12 @@ end
 opt = OptionParser.new
 
 all = false
+reverse = false
 opt.on('-a') { all = true }
+opt.on('-r') { reverse = true }
 opt.parse!(ARGV)
 
 files = all ? Dir.entries('.') : Dir.glob('*')
+files.sort!
+files.reverse! if reverse
 display_files(files)
