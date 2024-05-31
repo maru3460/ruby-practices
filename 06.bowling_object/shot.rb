@@ -13,7 +13,7 @@ class Shot
     mark.to_i
   end
 
-  def valid?
+  def invalid?
     !mark.nil?
   end
 end
