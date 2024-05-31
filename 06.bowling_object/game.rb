@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 # frozen_string_literal: true
 
 require './frame'
@@ -17,5 +15,3 @@ class Game
     10.times.sum { |i| @frames[i].score(@frames[i + 1], @frames[i + 2]) }
   end
 end
-
-puts Game.new(ARGV[0]).score
